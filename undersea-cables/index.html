@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Undersea Cables · The Internet Lives on the Ocean Floor · Vynema Studio</title>
+<meta name="description" content="A short guide to undersea internet cables: the story, the numbers, a cable's anatomy, how light travels, and starter prompts to make your own cinematic explainer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:16px}
+.stat .n{font-family:'Space Mono',monospace;font-size:2rem;color:var(--accent);line-height:1.1}
+.stat p{font-size:.95rem}.stat a{font-size:.8rem;font-family:'Space Mono',monospace}
+ol.layers{list-style:none;counter-reset:l;margin-top:12px}
+ol.layers li{counter-increment:l;padding:10px 0;border-bottom:1px solid var(--line)}
+ol.layers li::before{content:counter(l,decimal-leading-zero);font-family:'Space Mono',monospace;color:var(--accent);margin-right:14px}
+.story p,.body p{margin-bottom:14px}.muted{color:var(--muted)}
+.prompt h3{font-size:1.05rem;margin:24px 0 8px}pre{white-space:pre-wrap}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="eyebrow">Vynema Studio · Guide · Undersea Cables</div>
+  <h1>The internet isn't in the sky. It's on the <em>ocean floor.</em></h1>
+  <p class="lead">More than 99% of international data travels through cables about as thick as a garden hose. Here's the story, the numbers, what's inside one, and prompts to make your own cinematic explainer.</p>
+
+  <h2>The story</h2>
+  <div class="story">
+    <p><strong>Sky vs sea floor.</strong> Ask people where the internet lives and many point up, to satellites. But satellites carry only a very small share of international traffic. The real backbone lies on the seabed.</p>
+    <p><strong>Inside a cable.</strong> A modern submarine cable is roughly garden-hose thick. At its heart are glass fibres about as thin as a human hair, carrying data as pulses of light. Some lie kilometres below the surface, in total darkness.</p>
+    <p><strong>1858: the copper failure.</strong> The first transatlantic telegraph cable linked Ireland and Newfoundland in August 1858. Messages crawled across it, and within a month it went silent. But the idea survived, and lasting cables followed in 1866.</p>
+    <p><strong>1988: light crosses the Atlantic.</strong> On 14 December 1988, TAT-8 entered service as the first transatlantic fibre-optic cable, linking the US, UK and France. After it, the balance of international traffic moved rapidly from satellite to cable.</p>
+    <p><strong>Today.</strong> Hundreds of systems criss-cross the oceans, stretching well over a million kilometres. Not a cloud. A cable.</p>
+  </div>
+
+  <h2>Key numbers</h2>
+  <div class="stats">
+    <div class="card stat"><div class="n">99%+</div><p>of international data exchange travels via submarine cables.</p><a href="https://www.itu.int/digital-resilience/submarine-cables/">ITU ↗</a></div>
+    <div class="card stat"><div class="n">600+</div><p>active and planned submarine cable systems.</p><a href="https://www2.telegeography.com/submarine-cable-faqs-frequently-asked-questions">TeleGeography FAQ ↗</a></div>
+    <div class="card stat"><div class="n">1.5M+ km</div><p>of submarine cable in service worldwide.</p><a href="https://www2.telegeography.com/submarine-cable-faqs-frequently-asked-questions">TeleGeography FAQ ↗</a></div>
+    <div class="card stat"><div class="n">1858</div><p>first transatlantic telegraph cable; it failed within weeks.</p><a href="https://www.smithsonianmag.com/history/the-first-transatlantic-telegraph-cable-was-a-bold-beautiful-failure-180957089/">Smithsonian ↗</a></div>
+    <div class="card stat"><div class="n">1988</div><p>TAT-8, the first transatlantic fibre-optic cable, 280 Mbit/s.</p><a href="https://www.comsoc.org/node/19856">IEEE ComSoc ↗</a> · <a href="https://atlantic-cable.com/Cables/speed.htm">atlantic-cable.com ↗</a></div>
+    <div class="card stat"><div class="n">200+</div><p>cable repairs reported worldwide in 2023, about three faults a week.</p><a href="https://www.itu.int/digital-resilience/submarine-cables/">ITU ↗</a></div>
+  </div>
+
+  <h2>Anatomy of a cable</h2>
+  <p class="muted">A typical deep-sea design, from outside in. Designs vary; shallow-water cables add heavy steel armour against anchors and fishing gear.</p>
+  <ol class="layers">
+    <li><strong>Polyethylene sheath</strong>: the outer insulating jacket.</li>
+    <li><strong>Steel strength wires</strong>: tensile strength for laying and recovery.</li>
+    <li><strong>Copper conductor</strong>: carries electrical power to the repeaters along the route.</li>
+    <li><strong>Insulation / filler</strong>: keeps power and water where they belong.</li>
+    <li><strong>Steel tube</strong>: protects the fibres from pressure and water.</li>
+    <li><strong>Optical fibres</strong>: hair-thin glass strands that carry the light.</li>
+  </ol>
+  <p class="muted" style="margin-top:12px">The cutaway in our film is illustrative, not an engineering drawing of any specific cable.</p>
+
+  <h2>How a light pulse travels</h2>
+  <div class="body">
+    <p><strong>1. Encode.</strong> At the landing station, lasers turn data into rapid flashes of light, often at many wavelengths (colours) at once in the same fibre.</p>
+    <p><strong>2. Guide.</strong> The fibre's glass core is wrapped in glass with a lower refractive index, so light that hits the boundary at a shallow angle reflects back in (total internal reflection) and zig-zags along the core.</p>
+    <p><strong>3. Boost.</strong> Light fades over distance, so powered repeaters spaced along the cable amplify the signal on its way across the ocean.</p>
+    <p><strong>4. Decode.</strong> On the far shore, detectors turn the light back into data, and it joins land networks to reach your phone.</p>
+  </div>
+
+  <h2>Make your own cinematic explainer</h2>
+  <p class="muted">Starter prompts for any AI assistant. Swap in your own topic and keep facts sourced.</p>
+  <div class="prompt">
+    <h3>1 · Concept &amp; storyboard</h3>
+<pre>I'm making a 45–60 second vertical (9:16) cinematic explainer about [TOPIC]. Give me 3 concept options, each with a one-line hook that challenges a common misconception, a story arc (hook → reveal → history beat → today → payoff line), and a 10–14 panel storyboard with picture + on-screen text per panel.</pre>
+    <h3>2 · Cinematic narration script</h3>
+<pre>Write a 100–120 word voiceover for a 50-second explainer about [TOPIC]. Short, punchy sentences. Open with a surprising contradiction, include one moment of failure and one comeback, end with a three-beat closing line. Only use facts I can source; list a public source URL for every number.</pre>
+    <h3>3 · Shot list with scale changes</h3>
+<pre>Turn this script into a shot list with timecodes. Make the camera travel across scales: orbit → atmosphere → surface → deep → macro cutaway → inside the smallest part → pull back to a global view. For each shot give camera move, duration, lighting mood and transition into the next.</pre>
+    <h3>4 · three.js glowing globe</h3>
+<pre>Write a single-file three.js scene: a dark charcoal globe built from Natural Earth land outlines, thin glowing lime (#C5FF4A) arcs between coastal points, small light pulses travelling along each arc, a slow auto-rotate and a soft bloom. 1080×1920 canvas, no external models, comments explaining each part.</pre>
+    <h3>5 · Sound-design brief</h3>
+<pre>Write a sound-design brief for a 50-second ocean-and-technology explainer: an ambient bed per section (space hum, underwater rumble, deep silence, electric crackle for history, rising synth for today), list of spot effects synced to on-screen moments, one deliberate silence for impact, and loudness targets for social video.</pre>
+    <h3>6 · Captions &amp; hooks</h3>
+<pre>Give me 10 first-line hooks (under 8 words) for a reel about [TOPIC], then an Instagram caption: hook, a comment-keyword CTA, 3–5 short sourced lines, a disclosure line, and 10 hashtags. Then a YouTube Shorts title under 70 characters.</pre>
+    <h3>7 · Fact-check pass</h3>
+<pre>Here is my script: [PASTE]. For every factual claim, tell me whether it's supported by a primary public source, give the URL and the exact quote, and flag anything that should be softened or labelled "illustrative".</pre>
+  </div>
+  <p style="margin-top:20px"><strong>Helpful free tools:</strong> <a href="https://threejs.org/">three.js</a> for 3D in the browser, <a href="https://www.naturalearthdata.com/">Natural Earth</a> for public-domain map data, an open-source text-to-speech model (check its licence for commercial use), and <a href="https://ffmpeg.org/">ffmpeg</a> to record, mix and encode.</p>
+
+  <footer>
+    <p>Follow <a href="https://www.instagram.com/vynemastudio/">@vynemastudio</a> for more cinematic explainers ⚡</p>
+    <p><a href="/">← All Vynema guides</a></p>
+    <p>Independent 3D explainer; illustrative routes; not affiliated with TeleGeography or any cable operator.</p>
+  </footer>
+</main>
+</body>
+</html>
