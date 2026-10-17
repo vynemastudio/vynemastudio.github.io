@@ -21,3 +21,17 @@ p.lead{color:var(--muted);font-size:1.15rem;max-width:620px}
 .btn:hover{text-decoration:none;opacity:.9}
 pre{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;overflow-x:auto;font-size:.85rem}
 footer{border-top:1px solid var(--line);margin-top:64px;padding-top:24px;color:var(--muted);font-size:.85rem;font-family:'Space Mono',monospace}
+/* How this was made: stepper, behind-the-scenes pair, by-the-numbers */
+.steps{list-style:none;counter-reset:s;margin-top:16px;display:grid;gap:12px}
+.steps li{counter-increment:s;position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px 64px}
+.steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:18px;top:16px;font-family:'Space Mono',monospace;font-weight:700;color:var(--accent)}
+.steps li strong{display:block;margin-bottom:2px}.steps li span{color:var(--muted);font-size:.95rem}
+.bts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;max-width:620px}
+.bts figure{margin:0}.bts img{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;border-radius:12px;border:1px solid var(--line);background:#000}
+.bts figcaption{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.bts figcaption b{color:var(--accent);font-weight:700}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px}
+.nums>div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.nums .n{font-family:'Space Mono',monospace;font-size:1.4rem;white-space:nowrap;color:var(--accent);line-height:1.1;overflow-wrap:anywhere}
+.nums p{color:var(--muted);font-size:.9rem;margin-top:4px}
+.closer{margin-top:24px;font-weight:700}
