@@ -15,5 +15,13 @@ User site for Vynema Studio, served at https://vynemastudio.github.io/. It holds
 | Vibe Check | https://vynemastudio.github.io/vibe-check/ (served by the vibe-check repo) | https://github.com/vynemastudio/vibe-check |
 | Undersea Cables | https://vynemastudio.github.io/undersea-cables/ | – (guide only) |
 | The Content Explosion | https://vynemastudio.github.io/content-explosion/ | – (guide only) |
+| Agentic AI Architecture · Part 01: The Refund Agent | https://vynemastudio.github.io/agentic-01-refund-agent/ (+ PDF blueprint) | – (guide only) |
+
+## Series pages
+
+The **Agentic AI Architecture** series (30 parts) uses one folder per part, `agentic-NN-<slug>/`, each with an `index.html`, a `blueprint.js` data file and a printable PDF. Every part shares:
+
+- `/assets/series.css`: the series components (progress bar, architecture diagram, stepper, scenario lanes, failure table, checklist, payloads, print styles), layered on `/assets/style.css`.
+- `/assets/series.js`: data-driven components. A part sets `window.BLUEPRINT = { part, total, nodes, edges, wall, steps, scenario, failures, layers, checklist }` and calls `Series.mount()`. Each widget mounts independently, and the data is validated on load (check the console).
 
 `.nojekyll` is present so files are served as-is.

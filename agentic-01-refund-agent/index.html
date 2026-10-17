@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Architecture Blueprint #01: The Refund Agent · Agentic AI Architecture, Part 1 of 30 · Vynema Studio</title>
+<meta name="description" content="How to design a safe AI refund agent: the architecture, the request flow, safe retries with idempotency keys, reconciliation, failure cases, an evaluation checklist and sample payloads. Part 1 of 30.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/series.css">
+</head>
+<body>
+<main class="wrap">
+  <div class="series-bar"><span>Vynema Studio Original Series</span><span class="part" data-part>Part 01 / 30</span></div>
+  <div class="progress" data-progress></div>
+  <div class="eyebrow" style="margin-top:20px">Agentic AI Architecture · Blueprint #01</div>
+  <h1>Designing a safe <em>AI refund agent</em></h1>
+  <p class="lead">A customer asks your AI for a $500 refund. The AI can say yes, and still never touch the money. This blueprint shows how: the architecture, the request flow, safe retries, failure cases, and how to test it.</p>
+  <p class="principle">Let AI <span>reason</span>. Let trusted systems <span>enforce the rules</span>.</p>
+  <div class="kpis">
+    <div><b>0</b><span>payment credentials held by the agent</span></div>
+    <div><b>1</b><span>durable refund operation per approval: retries resume it, never duplicate it</span></div>
+    <div><b>100%</b><span>of decisions and tool calls logged and traced</span></div>
+  </div>
+  <noscript><p class="callout">The interactive diagrams need JavaScript. The <a href="blueprint-01-refund-agent.pdf">PDF blueprint</a> has everything on this page.</p></noscript>
+  <p class="links"><a class="btn primary" href="blueprint-01-refund-agent.pdf" download>Download the PDF blueprint</a><a class="btn" href="#arch">Explore the architecture</a></p>
+  <nav class="toc" aria-label="On this page"><a href="#arch">Architecture</a><a href="#flow-s">Request flow</a><a href="#retry">Timeouts &amp; idempotency</a><a href="#fail">Failure cases</a><a href="#evals">Evaluation checklist</a><a href="#payloads">Sample payloads</a><a href="#rules">Design rules</a><a href="#refs">References</a></nav>
+
+  <section id="arch">
+    <h2>1 · The architecture</h2>
+    <p class="muted">Tap any box. Everything above the dashed line can reason, read and propose. Only the trusted side can decide and move money.</p>
+    <div class="arch"><svg id="arch-svg" role="group" aria-label="Refund agent architecture diagram. Each box is a button that shows its details."></svg><div id="arch-panel" class="panel"></div></div>
+  </section>
+
+  <section id="flow-s">
+    <h2>2 · One request, step by step</h2>
+    <p class="muted">Follow a single $500 refund through the system. The diagram above highlights each hop.</p>
+    <div id="flow" class="flow"></div>
+  </section>
+
+  <section id="retry">
+    <h2>3 · The timeout: a blind retry vs a safe one</h2>
+    <p class="muted">A timeout doesn't mean the refund failed. It means you don't know yet. Play both versions side by side.</p>
+    <div id="scenario" class="scn"></div>
+    <div class="callout"><strong>The rule:</strong> commit the operation, its idempotency key and the exact provider request <em>before</em> the first call. Retry only with that same key and the same stored request, with backoff and a retry budget. Provider deduplication only lasts for its documented window, so outside it, or whenever you can't confirm the outcome, reconcile first. Never send a "fresh" request while the original outcome is unknown.</div>
+  </section>
+
+  <section id="fail">
+    <h2>4 · Failure cases</h2>
+    <p class="muted">What breaks, which layer catches it, and what the system does next.</p>
+    <div id="failures"></div>
+  </section>
+
+  <section id="evals">
+    <h2>5 · Evaluation checklist</h2>
+    <p class="muted">Run it before launch, then again every time the model, prompts, tools or policy change.</p>
+    <div id="checklist"></div>
+  </section>
+
+  <section id="payloads">
+    <h2>6 · Sample payloads</h2>
+    <p class="muted">Illustrative, provider-agnostic pseudocode (paths and event names are simplified; check your provider's docs). Amounts are in minor units (50000 = $500.00).</p>
+    <div class="payload"><div class="hd"><h3>① Agent → policy engine: the proposal</h3><button type="button" class="btn" data-copy="p1" aria-label="Copy proposal payload">Copy</button></div>
+<pre tabindex="0" id="p1">POST /v1/refund-proposals
+Authorization: Bearer &lt;agent token, scoped to session sess_51C&gt;
+
+{
+  "proposal_id": "prp_01J9Q4",
+  "order_id": "ord_4821",
+  "amount": { "value": 50000, "currency": "USD" },
+  "reason_code": "NOT_DELIVERED",
+  "evidence": [
+    { "source": "orders",   "record": "ord_4821", "version": 7 },
+    { "source": "delivery", "record": "shp_77", "status": "IN_TRANSIT", "promised_by": "2026-10-06" },
+    { "source": "policy_kb", "doc": "refund-policy", "version": "3.2", "section": "4.2" }
+  ],
+  "agent_run_id": "run_8812",
+  "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736"
+}
+// No customer_id in the body: the engine takes the customer from the
+// authenticated session and re-reads the order and delivery itself.</pre></div>
+    <div class="payload"><div class="hd"><h3>② Policy engine → the decision</h3><button type="button" class="btn" data-copy="p2" aria-label="Copy decision payload">Copy</button></div>
+<pre tabindex="0" id="p2">{
+  "decision": "APPROVE",            // APPROVE | REVIEW | REJECT
+  "approval_id": "apr_7F3A",
+  "proposal_id": "prp_01J9Q4",
+  "order_id": "ord_4821",
+  "amount": { "value": 50000, "currency": "USD" },
+  "checks": [
+    { "rule": "eligible.not_delivered_after_days", "result": "PASS", "detail": "10 days past promise (min 7)" },
+    { "rule": "amount.lte_refundable_remaining",   "result": "PASS", "detail": "50000 of 50000" },
+    { "rule": "limits.auto_approve_max",           "result": "PASS", "detail": "50000 ≤ 75000" },
+    { "rule": "limits.customer_30d",               "result": "PASS", "detail": "1 of 3 refunds" },
+    { "rule": "duplicate.no_open_or_settled_refund","result": "PASS" },
+    { "rule": "permissions.channel_may_request",   "result": "PASS" }
+  ],
+  "policy_version": "refunds-2026-10-01",
+  "decided_at": "2026-10-16T18:00:02Z",
+  "facts_snapshot": "fct_51D",          // the engine's own reads, stored
+  "bound_to": { "customer": "cus_h_9f2c…", "payment": "pay_9K2" },
+  "expires_at": "2026-10-16T18:15:00Z"   // stored server-side, consumed once
+}</pre></div>
+    <div class="payload"><div class="hd"><h3>③ Refund service → payment provider (with the idempotency key)</h3><button type="button" class="btn" data-copy="p3" aria-label="Copy execute payload">Copy</button></div>
+<pre tabindex="0" id="p3">// 1. One transaction, COMMITTED before any provider call:
+//    consume the approval, reserve the amount, store the exact request
+BEGIN;
+  UPDATE approvals SET consumed_at = now()
+   WHERE id = 'apr_7F3A' AND consumed_at IS NULL AND expires_at > now();
+  INSERT refund_ledger (operation_id, approval_id, idempotency_key,
+                        amount, request, submission, provider_status)
+  VALUES ('op_7F3A', 'apr_7F3A', 'refund:apr_7F3A',
+          50000, '{...exact body below...}', 'PREPARED', NULL);
+  INSERT outbox (operation_id) VALUES ('op_7F3A');
+COMMIT;
+
+// 2. An outbox worker sends the stored request (same key every time)
+POST /v1/refunds
+Idempotency-Key: refund:apr_7F3A
+
+{ "payment": "pay_9K2", "amount": 50000, "currency": "usd",
+  "metadata": { "approval_id": "apr_7F3A", "order_id": "ord_4821" } }</pre></div>
+    <div class="payload"><div class="hd"><h3>④ Timeout → retry or reconcile</h3><button type="button" class="btn" data-copy="p4" aria-label="Copy reconcile payload">Copy</button></div>
+<pre tabindex="0" id="p4">// Timeout: outcome unknown. Conditional, so it never overwrites
+// a result a webhook already recorded
+UPDATE refund_ledger SET submission = 'UNKNOWN', version = version + 1
+ WHERE operation_id = 'op_7F3A' AND submission = 'SENT' AND version = 3;
+
+// Safe retry (inside the provider's deduplication window):
+// same key, the SAME stored request body
+POST /v1/refunds
+Idempotency-Key: refund:apr_7F3A        → replays the first result
+                                          (which can itself be an error)
+
+// Or reconcile: list refunds for the payment, match amount, currency
+// and metadata.approval_id; or wait for a signature-verified webhook
+GET /v1/refunds?payment=pay_9K2          → re_3QX, status "pending"
+webhook: refund.updated { "id": "re_3QX", "status": "succeeded",
+                          "metadata": { "approval_id": "apr_7F3A" } }
+
+UPDATE refund_ledger SET submission = 'RESOLVED',
+       provider_status = 'succeeded', provider_refund_id = 're_3QX'
+ WHERE operation_id = 'op_7F3A' AND provider_status IS DISTINCT FROM 'succeeded';
+// Nothing found? Keep it UNKNOWN and escalate. An empty lookup
+// doesn't prove an in-flight request won't still land.</pre></div>
+    <div class="payload"><div class="hd"><h3>⑤ Audit event (direct identifiers removed)</h3><button type="button" class="btn" data-copy="p5" aria-label="Copy audit event">Copy</button></div>
+<pre tabindex="0" id="p5">{
+  "event": "refund.executed",
+  "at": "2026-10-16T18:02:11Z",
+  "actor": "refund-service",
+  "approval_id": "apr_7F3A",
+  "proposal_id": "prp_01J9Q4",
+  "decision_by": "policy-engine",
+  "policy_version": "refunds-2026-10-01",
+  "amount": { "value": 50000, "currency": "USD" },
+  "customer_ref": "cus_h_9f2c…",      // pseudonymous: still personal data,
+                                      // access-controlled; no name/email/card
+  "provider_refund_id": "re_3QX",
+  "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736"
+}</pre></div>
+  </section>
+
+  <section id="rules">
+    <h2>7 · Ten design rules</h2>
+    <ol class="rules">
+      <li><strong>The agent holds no payment credentials.</strong> It has no tool that can move money, so even a manipulated agent can't execute.</li>
+      <li><strong>Agent tools are read-only and scoped to the signed-in customer.</strong> Identity comes from the session, never from chat text.</li>
+      <li><strong>Check ownership on every object.</strong> The order must belong to the authenticated customer (object-level authorization).</li>
+      <li><strong>Proposals are structured, not prose.</strong> Schema-validated fields plus evidence references.</li>
+      <li><strong>The policy engine fetches its own facts.</strong> It re-reads the order and delivery status instead of trusting the agent's summary. Claims it can't verify, like damage, need evidence or a human.</li>
+      <li><strong>Rules are deterministic and versioned.</strong> Same facts, same policy version, same decision. Every decision records the version, the time and the facts it used.</li>
+      <li><strong>Enforcement lives in the executor.</strong> The refund service only starts an operation from an authentic, unexpired, unconsumed approval bound to that customer, payment, amount and currency, and reserves the amount atomically.</li>
+      <li><strong>Commit before you call.</strong> The operation, its idempotency key and the exact request are committed before the first provider call, so every retry resumes the same operation.</li>
+      <li><strong>Unknown outcomes get resolved, not guessed.</strong> Retry only with the same key inside the provider's window; otherwise reconcile with lookups and signature-verified webhooks, and escalate anything still unresolved.</li>
+      <li><strong>Humans handle exceptions and high value.</strong> Reviewers are authorised and their overrides logged. Trace and evaluate everything, with direct identifiers removed.</li>
+    </ol>
+  </section>
+
+  <section id="refs">
+    <h2>8 · References</h2>
+    <ul class="refs">
+      <li><a href="https://docs.stripe.com/api/idempotent_requests">Stripe API: Idempotent requests</a> <span class="muted small">(an example of a payment provider's idempotency behaviour, including key expiry)</span></li>
+      <li><a href="https://docs.stripe.com/error-low-level">Stripe: Low-level error handling</a> <span class="muted small">(retry with the same key; resolve unknown outcomes before trying again)</span></li>
+      <li><a href="https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-apis/">AWS Builders' Library: Making retries safe with idempotent APIs</a></li>
+      <li><a href="https://brandur.org/idempotency-keys">Implementing Stripe-like idempotency keys in Postgres</a> <span class="muted small">(atomic phases and recovery points)</span></li>
+      <li><a href="https://microservices.io/patterns/data/transactional-outbox.html">Transactional outbox pattern</a></li>
+      <li><a href="https://genai.owasp.org/llmrisk/llm062025-excessive-agency/">OWASP Top 10 for LLM Applications 2025: LLM06 Excessive Agency</a></li>
+      <li><a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/">OWASP Top 10 for LLM Applications 2025: LLM01 Prompt Injection</a></li>
+      <li><a href="https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/">OWASP API Security Top 10 2023: API1 Broken Object Level Authorization</a></li>
+      <li><a href="https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/">OWASP GenAI: Agentic AI threats and mitigations</a></li>
+      <li><a href="https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf">OpenAI: A practical guide to building agents</a> <span class="muted small">(guardrails, tool risk ratings, human intervention for high-risk actions)</span></li>
+      <li><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic: Building effective agents</a></li>
+      <li><a href="https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf">NIST AI 600-1: Generative AI Profile</a> · <a href="https://csrc.nist.gov/projects/cprt/catalog#/cprt/framework/version/SP_800_53_5_1_1/home?element=AC-6">NIST SP 800-53 AC-6 Least Privilege</a></li>
+      <li><a href="https://www.openpolicyagent.org/docs">Open Policy Agent documentation</a> <span class="muted small">(one example of a decoupled policy engine)</span></li>
+      <li><a href="https://opentelemetry.io/docs/specs/semconv/gen-ai/">OpenTelemetry semantic conventions for generative AI</a> · <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">OWASP Logging Cheat Sheet</a></li>
+    </ul>
+    <p class="small muted" style="margin-top:14px">Illustrative reference architecture, not legal, compliance or financial advice. Adapt it to your stack, your payment provider's documented behaviour, and your own policies.</p>
+  </section>
+
+</main>
+<footer class="wrap">
+    <p><strong style="color:var(--text)" data-part="long">Part 1 of 30</strong>. Follow <a href="https://www.instagram.com/vynemastudio/">@vynemastudio</a> for all thirty parts. Next: Part 02 · coming soon.</p>
+    <p style="margin-top:8px">AI-assisted, code-rendered. Illustrative architecture. © Vynema Studio · <a href="/">All guides</a></p>
+  </footer>
+
+<script src="/assets/series.js"></script>
+<script src="blueprint.js"></script>
+</body>
+</html>
