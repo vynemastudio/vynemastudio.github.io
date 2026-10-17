@@ -14,5 +14,6 @@ User site for Vynema Studio, served at https://vynemastudio.github.io/. It holds
 |---|---|---|
 | Vibe Check | https://vynemastudio.github.io/vibe-check/ (served by the vibe-check repo) | https://github.com/vynemastudio/vibe-check |
 | Undersea Cables | https://vynemastudio.github.io/undersea-cables/ | – (guide only) |
+| The Content Explosion | https://vynemastudio.github.io/content-explosion/ | – (guide only) |
 
 `.nojekyll` is present so files are served as-is.

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Content Explosion · More Content, Same 24 Hours · Vynema Studio</title>
+<meta name="description" content="A short guide to the content explosion: the story, the numbers with sources, an interactive 'copy of a copy' model-collapse demo, and starter prompts to make your own cinematic explainer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:16px}
+.stat .n{font-family:'Space Mono',monospace;font-size:2rem;color:var(--accent);line-height:1.1}
+.stat p{font-size:.95rem}.stat a{font-size:.8rem;font-family:'Space Mono',monospace}
+.story p,.body p{margin-bottom:14px}.muted{color:var(--muted)}
+.prompt h3{font-size:1.05rem;margin:24px 0 8px}pre{white-space:pre-wrap}
+.lab{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:24px;align-items:center;margin-top:16px}
+@media (max-width:640px){.lab{grid-template-columns:1fr}}
+.frame{position:relative;width:100%;max-width:300px;aspect-ratio:9/16;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#000;margin:0 auto}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
+.frame .tag{position:absolute;left:10px;top:10px;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.1em;background:rgba(11,14,19,.75);color:var(--text);padding:4px 8px;border-radius:6px}
+.gen{font-family:'Space Mono',monospace;font-size:2.4rem;color:var(--accent);line-height:1}
+.gen small{font-size:.9rem;color:var(--muted);letter-spacing:.12em}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;margin:12px 0;touch-action:pan-y}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--accent),#6b6a55)}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--accent),#6b6a55)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:50%;background:var(--text);border:3px solid var(--accent);margin-top:-12px}
+input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--text);border:3px solid var(--accent)}
+.meter{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:6px}.meter i{display:block;height:100%;background:var(--accent);width:100%;transition:width .1s}
+.ticks{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="eyebrow">Vynema Studio · Guide · The Content Explosion</div>
+  <h1>More content than ever. Still just <em>24 hours.</em></h1>
+  <p class="lead">Twenty million videos a day, AI that writes faster than we can read, and one thing nobody can multiply. Here's the story, the numbers, a hands-on "copy of a copy" experiment, and prompts to make your own cinematic explainer.</p>
+
+  <h2>The story</h2>
+  <div class="story">
+    <p><strong>The explosion.</strong> Every day, more than twenty million videos are uploaded to YouTube. Shorts alone get over two hundred billion views a day.</p>
+    <p><strong>The accelerator.</strong> AI now makes content faster than ever: scripts, storyboards, scenes and screens in seconds. One study estimates that nearly half of new web articles are now primarily AI-written.</p>
+    <p><strong>The one thing we can't multiply.</strong> Content scales. Time doesn't. Every one of us still has just twenty-four hours, and every video, post and article competes for a slice of them.</p>
+    <p><strong>The strange part.</strong> When AI keeps learning from its own output without enough real, human-made data, something odd can happen: it slowly loses diversity. The rare, surprising details fade first, until everything drifts towards the same average. Researchers call it <em>model collapse</em>.</p>
+    <p><strong>The choice.</strong> More creators? That's incredible. More noise? That's different. Question what you watch. Verify what you share. Create something worth someone's attention.</p>
+    <p><strong>The irony.</strong> Our film was made with AI voice and rendered with code. It's part of the flood, too. We'd rather say so than pretend otherwise.</p>
+  </div>
+
+  <h2>Key numbers</h2>
+  <div class="stats">
+    <div class="card stat"><div class="n">20M+</div><p>videos uploaded to YouTube every day, on average (2025).</p><a href="https://blog.youtube/news-and-events/happy-birthday-youtube-20/">YouTube Blog ↗</a></div>
+    <div class="card stat"><div class="n">200B+</div><p>YouTube Shorts views per day, announced June 2025. Views, not people: replays count.</p><a href="https://www.theverge.com/news/689474/youtube-veo-3-ai-videos-shorts">The Verge ↗</a></div>
+    <div class="card stat"><div class="n">~50%</div><p>of new English-language web articles are primarily AI-written, per a detector-based estimate on a random sample.</p><a href="https://graphite.io/five-percent/research/ai-now-writes-as-many-online-articles-as-humans-do">Graphite ↗</a></div>
+    <div class="card stat"><div class="n">24 h</div><p>in everyone's day. No study needed.</p></div>
+    <div class="card stat"><div class="n">2024</div><p>"AI models collapse when trained on recursively generated data", published in Nature.</p><a href="https://www.nature.com/articles/s41586-024-07566-y">Shumailov et al. ↗</a></div>
+  </div>
+
+  <h2>Try it: a copy of a copy</h2>
+  <p class="muted">Drag the slider. Each generation is "trained" only on the one before it, with no fresh originals. Watch the detail, contrast and colour drain away.</p>
+  <div class="lab">
+    <div class="frame" id="frame">
+      <img id="imA" src="gen/gen_01.jpg" alt="Generation 1 of an illustrative model-collapse simulation: a warm scene of a grandmother and child folding a paper plane by a window">
+      <img id="imB" src="gen/gen_02.jpg" alt="" aria-hidden="true" style="opacity:0">
+      <span class="tag">ILLUSTRATIVE SIMULATION</span>
+    </div>
+    <div>
+      <div class="gen"><span id="gn">01</span> <small>/ 20 GENERATIONS</small></div>
+      <label for="sl" class="muted" style="display:block;margin-top:12px">Generation</label>
+      <input id="sl" type="range" min="1" max="20" step="0.05" value="1" aria-valuetext="Generation 1">
+      <div class="ticks"><span>GEN 1 · original</span><span>GEN 20 · collapsed</span></div>
+      <p style="margin-top:18px" class="muted">Variety left (illustrative)</p>
+      <div class="meter"><i id="mt"></i></div>
+      <p id="note" style="margin-top:14px">Crisp, colourful, full of small details.</p>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:14px">This is a visual simulation of the idea (an image repeatedly re-fitted to a simpler copy of itself), not output from a real AI model. Generation numbers are visual steps, not figures from any paper.</p>
+
+  <h2>Model collapse, in plain English</h2>
+  <div class="body">
+    <p><strong>1. Learning from examples.</strong> An AI model learns what text or images look like by studying huge numbers of human-made examples, including the rare, odd and surprising ones.</p>
+    <p><strong>2. A copy of a copy.</strong> If the next model learns mostly from the previous model's output, it's learning from a copy. Copies are a bit smoother and more average than the original, a bit like photocopying a photocopy.</p>
+    <p><strong>3. The tails disappear.</strong> Repeat that loop and the unusual stuff (the "tails") fades first. Over generations, outputs get blander and more alike. The Nature paper calls this model collapse.</p>
+    <p><strong>4. Real data is the antidote.</strong> The researchers found that keeping a share of original, human-made data in training reduces the damage. It's something that <em>can</em> happen in controlled experiments, not proof that today's AI tools are collapsing.</p>
+  </div>
+
+  <h2>Make your own cinematic explainer</h2>
+  <p class="muted">Starter prompts for any general AI assistant. Swap in your own topic and keep every fact sourced.</p>
+  <div class="prompt">
+    <h3>1 · Concept &amp; story arc</h3>
+<pre>I'm making a 45–60 second vertical (9:16) cinematic explainer about [TOPIC]. Give me 3 concepts, each with a one-line hook built on a striking number, a story arc (scale → acceleration → the limit → the twist → the choice → a self-aware ending), and a 12-panel storyboard with picture + on-screen text per panel.</pre>
+    <h3>2 · Narration with dramatic pauses</h3>
+<pre>Write a 110–130 word voiceover for a 55-second explainer about [TOPIC]. Conversational, short sentences, two single-word lines for emphasis, a quiet beat before the twist, and a closing line that turns the topic back on the video itself. Only use facts I can source; list a public source URL for every number.</pre>
+    <h3>3 · One continuous camera move</h3>
+<pre>Turn this script into a shot list where the camera never cuts in the final 10 seconds: start on one small human moment on a single phone screen and pull back continuously until it's one of millions forming a bigger shape. For each beat give framing, camera speed, lighting and what appears on screen.</pre>
+    <h3>4 · Visual metaphors for an abstract idea</h3>
+<pre>Give me 8 visual metaphors for [ABSTRACT IDEA, e.g. "information overload" or "AI learning from itself"], each filmable in 3–4 seconds without logos or real people. Rate each for clarity on a phone screen in under 1 second, and say which on-screen label keeps it honest (e.g. "Illustrative").</pre>
+    <h3>5 · Sound-design brief</h3>
+<pre>Write a sound-design brief for a 55-second explainer with these sections: [LIST]. Give each an ambient bed and spot effects synced to on-screen moments, plan one near-silent section and one hard cut to silence for impact, keep the voice clear on top, and give loudness targets for social video.</pre>
+    <h3>6 · Fact-check &amp; disclosure pass</h3>
+<pre>Here is my script and on-screen text: [PASTE]. For every claim, tell me if a primary public source supports it, with the URL and exact quote. Flag wording that could mislead (e.g. "half the internet" vs "half of new web articles"), and write a one-line AI disclosure for the caption.</pre>
+  </div>
+
+  <footer>
+    <p>Follow <a href="https://www.instagram.com/vynemastudio/">@vynemastudio</a> for more cinematic explainers ⚡</p>
+    <p><a href="/">← All Vynema guides</a></p>
+    <p>AI voice, code-rendered. The model-collapse sequence is an illustrative simulation. Independent explainer; not affiliated with YouTube or Graphite.</p>
+  </footer>
+</main>
+<script>
+(function(){
+  var N=20,imgs=[],sl=document.getElementById('sl'),A=document.getElementById('imA'),B=document.getElementById('imB'),
+      gn=document.getElementById('gn'),mt=document.getElementById('mt'),note=document.getElementById('note');
+  var pad=function(i){return (i<10?'0':'')+i};
+  for(var i=1;i<=N;i++){var im=new Image();im.src='gen/gen_'+pad(i)+'.jpg';imgs.push(im);}
+  var notes=[[1,'Crisp, colourful, full of small details.'],[4,'Fine textures start to smear.'],[8,'Colours narrow to a few safe tones.'],[12,'Figures and edges melt into the average.'],[16,'Almost everything looks the same.'],[19,'Collapsed: beige mush, no diversity left.']];
+  var a=-1,b=-1;
+  function upd(){var v=parseFloat(sl.value),lo=Math.floor(v),hi=Math.min(N,lo+1),f=v-lo;
+    if(lo!==a){A.src=imgs[lo-1].src;a=lo}
+    if(hi!==b){B.src=imgs[hi-1].src;b=hi}
+    B.style.opacity=hi===lo?0:f;
+    var g=Math.round(v);gn.textContent=pad(g);sl.setAttribute('aria-valuetext','Generation '+g);
+    mt.style.width=Math.round(100*Math.pow(1-(v-1)/(N-1),1.3)*0.92+8)+'%';
+    var t=notes[0][1];for(var k=0;k<notes.length;k++)if(v>=notes[k][0])t=notes[k][1];note.textContent=t;}
+  sl.addEventListener('input',upd);upd();
+})();
+</script>
+</body>
+</html>
